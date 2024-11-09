@@ -7,7 +7,7 @@ st.set_page_config(
     page_title="CiviDoc AI",
     page_icon="🏛️",
     layout="centered",
-    initial_sidebar_state="expanded"  # Collapsed by default on mobile
+    initial_sidebar_state="ecollapsed"  # Collapsed by default on mobile
 )
 
 # Apply dark theme
