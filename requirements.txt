@@ -1,14 +1,7 @@
-# Core dependencies
 streamlit
 groq
 python-dotenv
 
-# Document processing
-Pillow
-pypdf
-python-docx
-
-# LLM and embeddings
 llama-index-core
 llama-index-llms-groq
 llama-index-embeddings-huggingface
@@ -16,13 +9,3 @@ langchain
 langchain-community
 sentence-transformers
 transformers
-
-# UI enhancements
-streamlit-camera-input-live
-streamlit-extras
-streamlit-card
-streamlit-option-menu
-
-# File handling
-python-magic
-python-magic-bin
