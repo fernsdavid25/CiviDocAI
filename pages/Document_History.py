@@ -104,7 +104,7 @@ def document_history_page():
             with col1:
                 if st.button("Chat about Document", use_container_width=True):
                     st.session_state.current_doc = selected_doc
-                    st.switch_page("pages/3_Document_Chat.py")
+                    st.switch_page("pages/Document_Chat.py")
             
             with col2:
                 if st.button("Download Document", use_container_width=True):
@@ -128,11 +128,11 @@ def document_history_page():
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Analyze Documents", use_container_width=True):
-                st.switch_page("pages/1_Document_Analysis.py")
+                st.switch_page("pages/Document_Analysis.py")
         
         with col2:
             if st.button("Create New Document", use_container_width=True):
-                st.switch_page("pages/2_Writing_Assistant.py")
+                st.switch_page("pages/Writing_Assistant.py")
 
 if __name__ == "__main__":
     document_history_page()
