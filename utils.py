@@ -3,6 +3,7 @@ import streamlit as st
 from groq import Groq
 import io
 import base64
+import re
 import os
 from dotenv import load_dotenv
 from llama_index.core import VectorStoreIndex, Settings, Document
@@ -11,6 +12,7 @@ from llama_index.llms.groq import Groq as LlamaGroq
 from llama_index.embeddings.langchain import LangchainEmbedding
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from datetime import datetime
+from PIL import Image
 
 # Load environment variables and configure
 load_dotenv()
@@ -81,6 +83,218 @@ def process_image(image):
     )
     
     return completion.choices[0].message.content
+
+def generate_pdf_analysis(documents):
+    """Generate analysis from PDF documents using Groq"""
+    try:
+        # Combine all document content
+        full_text = "\n".join([doc.text for doc in documents])
+        
+        # Generate analysis using Groq
+        completion = client.chat.completions.create(
+            model="llama-3.1-70b-versatile",
+            messages=[
+                {
+                    "role": "user",
+                    "content": (
+                        "Please analyze this government document and provide:\n"
+                        "1. Document Type and Purpose:\n"
+                        "   - What kind of document is this?\n"
+                        "   - What is its main purpose?\n\n"
+                        "2. Key Requirements:\n"
+                        "   - What are the main requirements or conditions?\n"
+                        "   - What documents or information are needed?\n\n"
+                        "3. Important Deadlines:\n"
+                        "   - What are the key dates and deadlines?\n"
+                        "   - Are there any time-sensitive requirements?\n\n"
+                        "4. Complex Terms Explained:\n"
+                        "   - Explain any technical or legal terms in simple language\n"
+                        "   - Clarify any complex procedures\n\n"
+                        "5. Required Actions:\n"
+                        "   - What steps need to be taken?\n"
+                        "   - What is the process to follow?\n\n"
+                        "6. Contact Information:\n"
+                        "   - Who to contact for queries?\n"
+                        "   - Where to submit the documents?\n\n"
+                        "Document content:\n" + full_text
+                    )
+                }
+            ],
+            temperature=0.1,
+            max_tokens=2048,
+            top_p=1
+        )
+        
+        # Format the analysis with proper styling
+        analysis = completion.choices[0].message.content
+
+        completionsum = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+                {
+                    "role": "user",
+                    "content": (
+                        "Summarize the following content: " + analysis
+                    )
+                }
+            ],
+            temperature=0.1,
+            max_tokens=2048,
+            top_p=1
+        )
+
+        analysis = completionsum.choices[0].message.content
+        
+        # Add formatting for better readability
+        formatted_analysis = (
+            "<div class='analysis-container'>"
+            "<div class='analysis-section'>" +
+            analysis.replace('\n\n', '</div><div class="analysis-section">') +
+            "</div>"
+            "</div>"
+        )
+        
+        return formatted_analysis
+        
+    except Exception as e:
+        error_msg = "Error generating PDF analysis: " + str(e)
+        raise Exception(error_msg)
+
+def clean_llm_output(output):
+    """Clean LLM output by removing HTML tags and formatting symbols"""
+    # Remove HTML tags
+    cleaned_text = re.sub(r'<[^>]+>', '', output)
+    # Remove double asterisks
+    cleaned_text = cleaned_text.replace('**', '')
+    cleaned_text = cleaned_text.replace('*', '')
+    # Remove extra whitespace
+    cleaned_text = re.sub(r'\s+', ' ', cleaned_text)
+    return cleaned_text.strip()
+
+def format_analysis_results(text):
+    """Format analysis results into structured HTML"""
+    # First clean the text
+    cleaned_text = clean_llm_output(text)
+    
+    # Split into sections
+    sections = []
+    current_section = ""
+    current_title = ""
+    
+    for line in cleaned_text.split('\n'):
+        line = line.strip()
+        if ':' in line and not line.startswith('*'):
+            # If we have a previous section, save it
+            if current_title:
+                sections.append((current_title, current_section.strip()))
+            # Start new section
+            parts = line.split(':', 1)
+            current_title = parts[0].strip()
+            current_section = parts[1].strip() if len(parts) > 1 else ""
+        else:
+            current_section += " " + line
+    
+    # Add the last section
+    if current_title:
+        sections.append((current_title, current_section.strip()))
+    
+    # Generate HTML
+    html = "<div class='analysis-results'>"
+    for title, content in sections:
+        html += f"""
+            <div class='analysis-section card' style='margin-bottom: 1rem;'>
+                <h4 style='color: #60A5FA; margin-bottom: 0.5rem;'>{title}</h4>
+                <p style='margin: 0;'>{content}</p>
+            </div>
+        """
+    html += "</div>"
+    
+    return html
+
+def process_captured_image(picture):
+    """Process image captured from camera with mobile-friendly UI"""
+    try:
+        # Show processing status
+        status_placeholder = st.empty()
+        status_placeholder.markdown(
+            "<div class='status-badge status-warning'>"
+            "📸 Processing captured image..."
+            "</div>",
+            unsafe_allow_html=True
+        )
+        
+        # Process the image
+        image = Image.open(picture)
+        
+        # Display the captured image with proper mobile sizing
+        st.image(
+            image,
+            caption="Captured Document",
+            use_column_width=True  # Makes image responsive
+        )
+        
+        # Process image with AI
+        with st.spinner("Analyzing document..."):
+            analysis = process_image(image)
+        
+        # Generate filename with timestamp
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"captured_image_{timestamp}"
+        
+        # Save results
+        st.session_state.analyses[filename] = {
+            'type': 'image/jpeg',
+            'analysis': analysis,
+            'timestamp': datetime.datetime.now()
+        }
+        
+        # Create chat engine
+        st.session_state.chat_engines[filename] = create_chat_engine(analysis)
+        
+        # Save to history
+        save_to_history(
+            filename,
+            'Captured Image',
+            analysis,
+            datetime.datetime.now()
+        )
+        
+        # Update status to success
+        status_placeholder.markdown(
+            "<div class='status-badge status-success'>"
+            "✅ Image analyzed successfully!"
+            "</div>",
+            unsafe_allow_html=True
+        )
+        
+        # Display analysis results
+        st.markdown(
+            "<div class='card'>"
+            "<h4>Analysis Results</h4>"
+            f"<div style='margin: 1rem 0;'>{analysis}</div>"
+            "</div>",
+            unsafe_allow_html=True
+        )
+        
+        # Mobile-friendly action buttons
+        st.markdown("<div class='touch-spacing'>", unsafe_allow_html=True)
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("💬 Start Chat", use_container_width=True):
+                st.session_state.current_doc = filename
+                st.switch_page("pages/Document_Chat.py")
+        with col2:
+            if st.button("📸 New Capture", use_container_width=True):
+                st.rerun()
+                
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+    except Exception as e:
+        st.error(
+            "❌ Error processing image\n"
+            f"Details: {str(e)}"
+        )
 
 def process_pdf(pdf_file):
     """Process PDF document using LlamaIndex"""
