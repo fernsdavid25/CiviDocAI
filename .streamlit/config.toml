@@ -1,6 +1,25 @@
 [theme]
-primaryColor="#a7bdf3"
-backgroundColor="#2c3d5c"
-secondaryBackgroundColor="#5d84d8"
-textColor="#ffffff"
-font="serif"
+primaryColor = "#3B82F6"
+backgroundColor = "#0F172A"
+secondaryBackgroundColor = "#1E293B"
+textColor = "#E2E8F0"
+font = "sans serif"
+
+[server]
+maxUploadSize = 200
+enableXsrfProtection = true
+enableCORS = false
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"
+showSidebarNavigation = true
+
+[runner]
+magicEnabled = true
+fastRerenderEnabled = true
+
+[logger]
+level = "info"
