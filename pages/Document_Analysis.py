@@ -19,7 +19,7 @@ st.set_page_config(
     page_title="Document Analysis |  CiviDoc AI",
     page_icon="📝",
     layout="centered",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 # Apply dark theme
