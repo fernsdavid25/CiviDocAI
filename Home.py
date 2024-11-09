@@ -1,211 +1,201 @@
 # Home.py
 import streamlit as st
-from dotenv import load_dotenv
-import os
+from theme import apply_dark_theme, show_page_header, show_footer
 
-# Load environment variables
-load_dotenv()
-
+# Page config
 st.set_page_config(
-    page_title="Government Document Assistant",
+    page_title="CiviDoc AI",
     page_icon="🏛️",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="centered",
+    initial_sidebar_state="expanded"  # Collapsed by default on mobile
 )
 
-# Custom CSS
-st.markdown("""
-    <style>
-    .main {
-        padding: 0rem 1rem;
-    }
-    .stButton>button {
-        width: 100%;
-        height: 100px;
-        font-size: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        transition: transform 0.2s;
-    }
-    .stButton>button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    .feature-card {
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin-bottom: 1rem;
-        border: 1px solid #e9ecef;
-    }
-    .feature-icon {
-        font-size: 24px;
-        margin-right: 10px;
-    }
-    h1 {
-        padding: 1rem 0;
-    }
-    h3 {
-        padding: 0.5rem 0;
-    }
-    .highlight {
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+# Apply dark theme
+st.markdown(apply_dark_theme(), unsafe_allow_html=True)
 
 def main():
-    # Header Section
-    col1, col2 = st.columns([2,1])
-    with col1:
-        st.title("🏛️ Government Document Assistant")
-        st.markdown("""
-        <p style='font-size: 1.2em;'>
-        Your comprehensive AI-powered assistant for understanding, creating, and managing government documents.
-        </p>
-        """, unsafe_allow_html=True)
+    # Header
+    st.markdown(show_page_header(
+        "🏛️ CiviDoc AI",
+        "Your AI-powered companion for all government document needs"
+    ), unsafe_allow_html=True)
     
-    # Quick Access Section
-    st.markdown("### 🚀 Quick Access")
-    col1, col2, col3 = st.columns(3)
+    # Quick Access Section - Mobile Friendly Cards
+    st.markdown(
+        "<div class='grid'>"  # Uses the responsive grid system
+        
+        "<div class='card' onclick='void(0)'>"  # Added onclick for better touch feedback
+        "<div style='text-align: center;'>"
+        "<h3 style='margin-bottom: 0.5rem;'>📝 Document Analysis</h3>"
+        "<p style='margin-bottom: 1rem;'>Upload and understand government documents instantly</p>"
+        "<div class='status-badge status-success'>Ready to Use</div>"
+        "</div>"
+        "</div>"
+        
+        "<div class='card' onclick='void(0)'>"
+        "<div style='text-align: center;'>"
+        "<h3 style='margin-bottom: 0.5rem;'>✍️ Writing Assistant</h3>"
+        "<p style='margin-bottom: 1rem;'>Create professional government documents effortlessly</p>"
+        "<div class='status-badge status-success'>Ready to Use</div>"
+        "</div>"
+        "</div>"
+        
+        "<div class='card' onclick='void(0)'>"
+        "<div style='text-align: center;'>"
+        "<h3 style='margin-bottom: 0.5rem;'>💬 Document Chat</h3>"
+        "<p style='margin-bottom: 1rem;'>Get instant answers about your documents</p>"
+        "<div class='status-badge status-success'>Ready to Use</div>"
+        "</div>"
+        "</div>"
+        
+        "</div>",
+        unsafe_allow_html=True
+    )
     
-    with col1:
-        if st.button("📝 Document Analysis\n\nUnderstand & process documents", key="analyze"):
-            st.switch_page("pages/Document_Analysis.py")
+    # Quick Action Buttons - Touch Friendly
+    st.markdown("<div class='touch-spacing'>", unsafe_allow_html=True)
+    if st.button("📝 Start Document Analysis", use_container_width=True):
+        st.switch_page("pages/Document_Analysis.py")
+    if st.button("✍️ Create New Document", use_container_width=True):
+        st.switch_page("pages/Writing_Assistant.py")
+    if st.button("💬 Open Document Chat", use_container_width=True):
+        st.switch_page("pages/Document_Chat.py")
+    st.markdown("</div>", unsafe_allow_html=True)
     
-    with col2:
-        if st.button("✍️ Writing Assistant\n\nCreate government documents", key="write"):
-            st.switch_page("pages/Writing_Assistant.py")
+    # Features Section - Responsive Grid
+    st.markdown("<h3 style='margin: 1.5rem 0 1rem;'>🌟 Key Features</h3>", unsafe_allow_html=True)
     
-    with col3:
-        if st.button("💬 Interactive Chat\n\nGet real-time assistance", key="chat"):
-            st.switch_page("pages/Document_Chat.py")
-
-    # Main Features Section
-    st.markdown("---")
-    st.markdown("### 🌟 Key Features")
+    # Features grid with improved mobile layout
+    st.markdown(
+        "<div class='grid'>"
+        
+        # Document Analysis Card
+        "<div class='card'>"
+        "<h3 style='margin-bottom: 0.75rem;'>📑 Document Analysis</h3>"
+        "<div class='touch-spacing'>"
+        "<p>✓ Instant document understanding</p>"
+        "<p>✓ Complex term explanations</p>"
+        "<p>✓ Form filling guidance</p>"
+        "<p>✓ Requirement extraction</p>"
+        "<p>✓ Deadline tracking</p>"
+        "</div>"
+        "</div>"
+        
+        # Writing Assistant Card
+        "<div class='card'>"
+        "<h3 style='margin-bottom: 0.75rem;'>✍️ Writing Assistant</h3>"
+        "<div class='touch-spacing'>"
+        "<p>✓ RTI application generator</p>"
+        "<p>✓ Complaint letter creator</p>"
+        "<p>✓ Legal notice drafting</p>"
+        "<p>✓ Appeal letter formatting</p>"
+        "<p>✓ Custom document templates</p>"
+        "</div>"
+        "</div>"
+        
+        # Interactive Help Card
+        "<div class='card'>"
+        "<h3 style='margin-bottom: 0.75rem;'>💬 Interactive Help</h3>"
+        "<div class='touch-spacing'>"
+        "<p>✓ Real-time document chat</p>"
+        "<p>✓ Context-aware responses</p>"
+        "<p>✓ Procedure explanations</p>"
+        "<p>✓ Multi-document support</p>"
+        "<p>✓ Instant clarifications</p>"
+        "</div>"
+        "</div>"
+        
+        # Document Management Card
+        "<div class='card'>"
+        "<h3 style='margin-bottom: 0.75rem;'>📚 Document Management</h3>"
+        "<div class='touch-spacing'>"
+        "<p>✓ Secure document storage</p>"
+        "<p>✓ Version tracking</p>"
+        "<p>✓ Easy organization</p>"
+        "<p>✓ Quick retrieval</p>"
+        "<p>✓ Status monitoring</p>"
+        "</div>"
+        "</div>"
+        
+        "</div>",
+        unsafe_allow_html=True
+    )
     
-    col1, col2 = st.columns(2)
+    # How It Works Section - Mobile Friendly Steps
+    st.markdown("<h3 style='margin: 1.5rem 0 1rem;'>🔄 How It Works</h3>", unsafe_allow_html=True)
     
-    with col1:
-        with st.container():
-            st.markdown("""
-            <div class='feature-card'>
-                <h3>📑 Document Analysis</h3>
-                <ul>
-                    <li>Upload government documents (PDFs, images)</li>
-                    <li>Get instant analysis and explanations</li>
-                    <li>Understand complex terminology</li>
-                    <li>Extract key requirements and deadlines</li>
-                    <li>Step-by-step form filling guidance</li>
-                </ul>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            with st.container():
-                st.markdown("""
-                <div class='feature-card'>
-                    <h3>✍️ Writing Assistant</h3>
-                    <ul>
-                        <li>Generate RTI applications</li>
-                        <li>Create complaint letters</li>
-                        <li>Draft legal notices</li>
-                        <li>Write appeal letters</li>
-                        <li>Format government applications</li>
-                        <li>Custom document templates</li>
-                    </ul>
-                </div>
-                """, unsafe_allow_html=True)
+    st.markdown(
+        "<div class='grid'>"  # Responsive grid
+        
+        # Step 1
+        "<div class='card' style='text-align: center;'>"
+        "<h4 style='margin-bottom: 0.5rem;'>1. Upload</h4>"
+        "<p style='margin-bottom: 0.75rem;'>Upload your government documents or start creating new ones</p>"
+        "<div class='progress-bar'><div class='progress-bar-fill' style='width: 25%;'></div></div>"
+        "</div>"
+        
+        # Step 2
+        "<div class='card' style='text-align: center;'>"
+        "<h4 style='margin-bottom: 0.5rem;'>2. Process</h4>"
+        "<p style='margin-bottom: 0.75rem;'>Our AI analyzes and processes your documents instantly</p>"
+        "<div class='progress-bar'><div class='progress-bar-fill' style='width: 50%;'></div></div>"
+        "</div>"
+        
+        # Step 3
+        "<div class='card' style='text-align: center;'>"
+        "<h4 style='margin-bottom: 0.5rem;'>3. Understand</h4>"
+        "<p style='margin-bottom: 0.75rem;'>Get clear explanations and guidance for your documents</p>"
+        "<div class='progress-bar'><div class='progress-bar-fill' style='width: 75%;'></div></div>"
+        "</div>"
+        
+        # Step 4
+        "<div class='card' style='text-align: center;'>"
+        "<h4 style='margin-bottom: 0.5rem;'>4. Act</h4>"
+        "<p style='margin-bottom: 0.75rem;'>Take action with confidence using our recommendations</p>"
+        "<div class='progress-bar'><div class='progress-bar-fill' style='width: 100%;'></div></div>"
+        "</div>"
+        
+        "</div>",
+        unsafe_allow_html=True
+    )
     
-    with col2:
-        with st.container():
-            st.markdown("""
-            <div class='feature-card'>
-                <h3>💬 Interactive Help</h3>
-                <ul>
-                    <li>Chat with AI about your documents</li>
-                    <li>Get instant answers to queries</li>
-                    <li>Understand procedures better</li>
-                    <li>Clarify doubts in real-time</li>
-                    <li>Multi-document context support</li>
-                </ul>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            with st.container():
-                st.markdown("""
-                <div class='feature-card'>
-                    <h3>📚 Document Management</h3>
-                    <ul>
-                        <li>Organize all your documents</li>
-                        <li>Track application status</li>
-                        <li>Access document history</li>
-                        <li>Download processed documents</li>
-                        <li>Secure document storage</li>
-                    </ul>
-                </div>
-                """, unsafe_allow_html=True)
-
-    # How It Works Section
-    st.markdown("---")
-    st.markdown("### 🔄 How It Works")
+    # Additional Information - Mobile Friendly Layout
+    st.markdown("<div class='grid'>", unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
+    # Who Is This For Section
+    st.markdown(
+        "<div class='card'>"
+        "<h3 style='margin-bottom: 0.75rem;'>🎯 Who Is This For?</h3>"
+        "<div class='touch-spacing'>"
+        "<p>• Citizens dealing with government procedures</p>"
+        "<p>• RTI applicants and activists</p>"
+        "<p>• Legal professionals</p>"
+        "<p>• Government service seekers</p>"
+        "<p>• Anyone needing document assistance</p>"
+        "</div>"
+        "</div>",
+        unsafe_allow_html=True
+    )
     
-    with col1:
-        st.markdown("""
-        <div class='feature-card' style='text-align: center;'>
-            <h4>1. Upload or Create</h4>
-            <p>Upload existing documents or create new ones using our templates</p>
-        </div>
-        """, unsafe_allow_html=True)
+    # Security & Privacy Section
+    st.markdown(
+        "<div class='card'>"
+        "<h3 style='margin-bottom: 0.75rem;'>🛡️ Security & Privacy</h3>"
+        "<div class='touch-spacing'>"
+        "<p>• End-to-end encryption</p>"
+        "<p>• Secure document processing</p>"
+        "<p>• No permanent storage</p>"
+        "<p>• Privacy-first approach</p>"
+        "<p>• Regular security updates</p>"
+        "</div>"
+        "</div>",
+        unsafe_allow_html=True
+    )
     
-    with col2:
-        st.markdown("""
-        <div class='feature-card' style='text-align: center;'>
-            <h4>2. Process & Analyze</h4>
-            <p>Our AI analyzes and helps you understand the content</p>
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
     
-    with col3:
-        st.markdown("""
-        <div class='feature-card' style='text-align: center;'>
-            <h4>3. Get Assistance</h4>
-            <p>Receive guidance, explanations, and next steps</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # Additional Information
-    st.markdown("---")
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("### 🎯 Who Is This For?")
-        st.markdown("""
-        - Citizens dealing with government procedures
-        - Individuals filing RTI applications
-        - People seeking government services
-        - Anyone needing help with official documents
-        """)
-    
-    with col2:
-        st.markdown("### 🛡️ Privacy & Security")
-        st.markdown("""
-        - Secure document processing
-        - No permanent storage of sensitive data
-        - End-to-end encryption
-        - Privacy-first approach
-        """)
-
     # Footer
-    st.markdown("---")
-    st.markdown("""
-    <div style='text-align: center; color: #6B7280; padding: 1rem;'>
-        <p>Need help? Start with Document Analysis or use our Writing Assistant</p>
-        <p style='font-size: 0.8em;'>Government Document Assistant - Making bureaucracy simpler</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(show_footer(), unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
