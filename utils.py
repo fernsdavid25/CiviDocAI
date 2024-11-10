@@ -1,4 +1,3 @@
-# utils.py
 import streamlit as st
 from groq import Groq
 import io
@@ -13,6 +12,7 @@ from llama_index.embeddings.langchain import LangchainEmbedding
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from datetime import datetime
 from PIL import Image
+import gettext
 
 # Load environment variables and configure
 load_dotenv()
@@ -143,19 +143,9 @@ def generate_pdf_analysis(documents):
             top_p=1
         )
 
-        analysis = completionsum.choices[0].message.content
+        analysissum = completionsum.choices[0].message.content
         
-        # Add formatting for better readability
-        formatted_analysis = (
-            "<div class='analysis-container'>"
-            "<div class='analysis-section'>" +
-            analysis.replace('\n\n', '</div><div class="analysis-section">') +
-            "</div>"
-            "</div>"
-        )
-        
-        return formatted_analysis
-        
+        return analysissum
     except Exception as e:
         error_msg = "Error generating PDF analysis: " + str(e)
         raise Exception(error_msg)
@@ -283,7 +273,7 @@ def process_captured_image(picture):
         with col1:
             if st.button("💬 Start Chat", use_container_width=True):
                 st.session_state.current_doc = filename
-                st.switch_page("pages/Document_Chat.py")
+                st.switch_page("pages/2_💬_Document_Chat.py")
         with col2:
             if st.button("📸 New Capture", use_container_width=True):
                 st.rerun()
