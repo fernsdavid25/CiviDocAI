@@ -1,4 +1,3 @@
-# Home.py
 import streamlit as st
 from theme import apply_dark_theme, show_page_header, show_footer
 
@@ -7,7 +6,7 @@ st.set_page_config(
     page_title="CiviDoc AI",
     page_icon="🏛️",
     layout="centered",
-    initial_sidebar_state="collapsed"  # Collapsed by default on mobile
+    initial_sidebar_state="collapsed"
 )
 
 # Apply dark theme
@@ -16,8 +15,10 @@ st.markdown(apply_dark_theme(), unsafe_allow_html=True)
 def main():
     # Header
     st.markdown(show_page_header(
+        "<div style='text-align: center;'>"
         "🏛️ CiviDoc AI",
-        "Your AI-powered companion for all government document needs"
+        "<div style='text-align: center;'>"
+        "Your AI-powered companion for all government document needs",
     ), unsafe_allow_html=True)
     
     # Quick Access Section - Mobile Friendly Cards
@@ -55,11 +56,11 @@ def main():
     # Quick Action Buttons - Touch Friendly
     st.markdown("<div class='touch-spacing'>", unsafe_allow_html=True)
     if st.button("📝 Start Document Analysis", use_container_width=True):
-        st.switch_page("pages/Document_Analysis.py")
+        st.switch_page("pages/1_📝_Document_Analysis.py")
     if st.button("✍️ Create New Document", use_container_width=True):
-        st.switch_page("pages/Writing_Assistant.py")
+        st.switch_page("pages/3_✍️_Writing_Assistant.py")
     if st.button("💬 Open Document Chat", use_container_width=True):
-        st.switch_page("pages/Document_Chat.py")
+        st.switch_page("pages/2_💬_Document_Chat.py")
     st.markdown("</div>", unsafe_allow_html=True)
     
     # Features Section - Responsive Grid
