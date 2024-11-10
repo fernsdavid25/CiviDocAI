@@ -1,4 +1,3 @@
-# utils/theme.py
 
 def apply_dark_theme():
     return (
@@ -85,13 +84,14 @@ def apply_dark_theme():
         
         # Tabs
         ".stTabs [data-baseweb='tab-list'] {"
-        "    gap: 8px;"
+        "    gap: 30px;"
         "    background-color: #1E293B;"
-        "    padding: 0.5rem;"
+        "    padding: 1.5rem;"
         "    border-radius: 8px;"
         "}"
         ".stTabs [data-baseweb='tab'] {"
-        "    height: 50px;"
+        "    height: 40px;"
+        "    padding: 1.5rem;"
         "    background-color: #2D3748;"
         "    border-radius: 8px;"
         "    color: #E2E8F0;"
