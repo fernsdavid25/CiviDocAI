@@ -315,28 +315,29 @@ def create_chat_engine(content):
     return index.as_chat_engine(chat_mode="condense_question", verbose=True)
 
 def generate_document(doc_type, fields):
-    """Generate government documents based on type and fields"""
-    prompt = f"""Generate a formal {doc_type} with the following details:
-    
+    """Generate and fill templates based on document type and user fields"""
+    # Template prompt for Llama to generate and fill
+    prompt = f"""Create an official {doc_type} with the details provided below. 
+    Ensure the document format meets standard government requirements.
+
+    Details:
     {fields}
     
-    Please format this as a proper official document following standard government formatting."""
-    
+    Structure the document with proper headings, formatting, and placeholders as appropriate for an official {doc_type}.
+    """
+
     completion = client.chat.completions.create(
         model="llama-3.2-90b-vision-preview",
         messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
+            {"role": "user", "content": prompt}
         ],
         temperature=0.7,
-        max_tokens=2048,
+        max_tokens=4096,
         top_p=1
     )
     
     return completion.choices[0].message.content
-
+    
 def save_to_history(doc_name, doc_type, content, timestamp=None):
     """Save document to history with metadata"""
     if timestamp is None:
