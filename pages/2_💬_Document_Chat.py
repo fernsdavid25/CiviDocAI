@@ -77,6 +77,7 @@ def document_chat_page():
                     for message in st.session_state.messages:
                         with st.chat_message(message["role"]):
                             st.write(message["content"])
+                            st.rerun()
     
     else:
         # No documents message
