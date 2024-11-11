@@ -243,7 +243,7 @@ def display_analysis_results():
                     f"<div class='status-badge status-success'>{data['type'].split('/')[1].upper()}</div>"
                     f"</div>"
                     f"<hr style='margin: 0.5rem 0;'>"
-                    f"(data['analysis'])" # Use the formatting function
+                    f"format_analysis_results{(data['analysis'])}" # Use the formatting function
                     f"<div class='touch-spacing'>"
                     f"</div>"
                     f"</div>",
