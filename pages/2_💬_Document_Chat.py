@@ -70,7 +70,10 @@ def document_chat_page():
             # Clear chat button
             if len(st.session_state.messages) > 1:
                 if st.button("🗑️ Clear Chat", use_container_width=True):
-                    st.session_state.messages = [st.session_state.messages[0]]
+                    # Reset to initial welcome message
+                    st.session_state.messages = [
+                    {"role": "assistant", "content": f"Hello! I'm here to help you understand {selected_doc}. What would you like to know?"}
+                    ]
                     st.rerun()
     
     else:
