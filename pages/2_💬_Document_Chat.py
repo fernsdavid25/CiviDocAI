@@ -62,28 +62,6 @@ def document_chat_page():
                 with st.chat_message(message["role"]):
                     st.write(message["content"])
             
-            # Suggested questions
-            if len(st.session_state.messages) <= 1:
-                st.markdown(
-                    "<div class='card'>"
-                    "<h4>Suggested Questions</h4>"
-                    "<div class='touch-spacing'>",
-                    unsafe_allow_html=True
-                )
-                
-                suggestions = [
-                    "What is this document about?",
-                    "What are the main requirements?",
-                    "Are there any deadlines I should know about?",
-                    "Can you explain the technical terms?",
-                    "What actions do I need to take?"
-                ]
-                
-                for suggestion in suggestions:
-                    if st.button(f"🔍 {suggestion}", use_container_width=True):
-                        handle_user_input(suggestion, selected_doc)
-                
-                st.markdown("</div></div>", unsafe_allow_html=True)
             
             # Chat input
             if prompt := st.chat_input("Type your question here..."):
