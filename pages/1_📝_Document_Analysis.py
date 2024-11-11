@@ -209,7 +209,6 @@ def process_uploaded_files(files):
 def display_analysis_results():
     """Display analysis results with mobile-friendly layout"""
     if st.session_state.analyses:
-        # Mobile-friendly filters
         
         # Display results
         if st.session_state.analyses:
