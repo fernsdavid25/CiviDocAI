@@ -20,7 +20,7 @@ groq_api_key = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=groq_api_key)
 
 # Configure LlamaIndex
-Settings.llm = LlamaGroq(api_key=groq_api_key, model="llama-3.1-70b-versatile")
+Settings.llm = LlamaGroq(api_key=groq_api_key, model="llama-3.2-90b-vision-preview")
 lc_embed_model = HuggingFaceEmbeddings(
     model_name="sentence-transformers/all-mpnet-base-v2"
 )
@@ -53,7 +53,7 @@ def process_image(image):
     img_url = f"data:image/jpeg;base64,{img_base64}"
     
     completion = client.chat.completions.create(
-        model="llama-3.2-11b-vision-preview",
+        model="llama-3.2-90b-vision-preview",
         messages=[
             {
                 "role": "user",
@@ -92,7 +92,7 @@ def generate_pdf_analysis(documents):
         
         # Generate analysis using Groq
         completion = client.chat.completions.create(
-            model="llama-3.1-70b-versatile",
+            model="llama-3.2-90b-vision-preview",
             messages=[
                 {
                     "role": "user",
@@ -324,7 +324,7 @@ def generate_document(doc_type, fields):
     Please format this as a proper official document following standard government formatting."""
     
     completion = client.chat.completions.create(
-        model="llama-3.1-70b-versatile",
+        model="llama-3.2-90b-vision-preview",
         messages=[
             {
                 "role": "user",
