@@ -210,21 +210,6 @@ def display_analysis_results():
     """Display analysis results with mobile-friendly layout"""
     if st.session_state.analyses:
         # Mobile-friendly filters
-        st.markdown(
-            "<div class='card' style='margin-bottom: 1rem;'>"
-            "<h4>Filter Results</h4>",
-            unsafe_allow_html=True
-        )
-        
-        # Touch-friendly filter options
-        filter_type = st.multiselect(
-            "Document Type",
-            ["Image", "PDF", "Captured"],
-            default=["Image", "PDF", "Captured"]
-        )
-        
-        
-        st.markdown("</div>", unsafe_allow_html=True)
         
         # Display results
         if st.session_state.analyses:
