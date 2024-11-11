@@ -92,7 +92,7 @@ def document_chat_page():
             # Clear chat button
             if len(st.session_state.messages) > 1:
                 if st.button("🗑️ Clear Chat", use_container_width=True):
-                    st.session_state.messages = [st.session_state.messages[-1]]
+                    st.session_state.messages = [st.session_state.messages[0]]
                     st.rerun()
     
     else:
@@ -135,14 +135,7 @@ def handle_user_input(prompt, selected_doc):
                 
                 # Display response
                 st.write(assistant_response)
-                
-                # Show related questions
-                with st.expander("Related Questions", expanded=False):
-                    suggestions = generate_related_questions(prompt, assistant_response)
-                    for suggestion in suggestions:
-                        if st.button(f"🔍 {suggestion}", key=f"related_{suggestion}", use_container_width=True):
-                            handle_user_input(suggestion, selected_doc)
-                
+            
             except Exception as e:
                 error_message = f"Sorry, I encountered an error: {str(e)}"
                 st.error(error_message)
