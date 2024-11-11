@@ -150,57 +150,6 @@ def generate_pdf_analysis(documents):
         error_msg = "Error generating PDF analysis: " + str(e)
         raise Exception(error_msg)
 
-def clean_llm_output(output):
-    """Clean LLM output by removing HTML tags and formatting symbols"""
-    # Remove HTML tags
-    cleaned_text = re.sub(r'<[^>]+>', '', output)
-    # Remove double asterisks
-    cleaned_text = cleaned_text.replace('**', '')
-    cleaned_text = cleaned_text.replace('*', '')
-    # Remove extra whitespace
-    cleaned_text = re.sub(r'\s+', ' ', cleaned_text)
-    return cleaned_text.strip()
-
-def format_analysis_results(text):
-    """Format analysis results into structured HTML"""
-    # First clean the text
-    cleaned_text = clean_llm_output(text)
-    
-    # Split into sections
-    sections = []
-    current_section = ""
-    current_title = ""
-    
-    for line in cleaned_text.split('\n'):
-        line = line.strip()
-        if ':' in line and not line.startswith('*'):
-            # If we have a previous section, save it
-            if current_title:
-                sections.append((current_title, current_section.strip()))
-            # Start new section
-            parts = line.split(':', 1)
-            current_title = parts[0].strip()
-            current_section = parts[1].strip() if len(parts) > 1 else ""
-        else:
-            current_section += " " + line
-    
-    # Add the last section
-    if current_title:
-        sections.append((current_title, current_section.strip()))
-    
-    # Generate HTML
-    html = "<div class='analysis-results'>"
-    for title, content in sections:
-        html += f"""
-            <div class='analysis-section card' style='margin-bottom: 1rem;'>
-                <h4 style='color: #60A5FA; margin-bottom: 0.5rem;'>{title}</h4>
-                <p style='margin: 0;'>{content}</p>
-            </div>
-        """
-    html += "</div>"
-    
-    return html
-
 def process_captured_image(picture):
     """Process image captured from camera with mobile-friendly UI"""
     try:
