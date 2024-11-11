@@ -74,7 +74,9 @@ def document_chat_page():
                     st.session_state.messages = [
                     {"role": "assistant", "content": f"Hello! I'm here to help you understand {selected_doc}. What would you like to know?"}
                     ]
-                    st.rerun()
+                    for message in st.session_state.messages:
+                        with st.chat_message(message["role"]):
+                            st.write(message["content"])
     
     else:
         # No documents message
