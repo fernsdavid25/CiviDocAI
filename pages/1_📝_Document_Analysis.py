@@ -205,14 +205,7 @@ def process_uploaded_files(files):
         unsafe_allow_html=True
     )
     
-    # Mobile-friendly action buttons
-    st.markdown("<div class='touch-spacing'>", unsafe_allow_html=True)
-    if st.button("💬 Start Chat", use_container_width=True):
-        st.switch_page("pages/2_💬_Document_Chat.py")
-    if st.button("📤 Process More", use_container_width=True):
-        st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
-
+    
 def display_analysis_results():
     """Display analysis results with mobile-friendly layout"""
     if st.session_state.analyses:
