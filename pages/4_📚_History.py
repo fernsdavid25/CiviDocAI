@@ -8,7 +8,7 @@ def display_document_content(content):
     st.markdown(
         f"<div class='card'>"
         f"<h4>Document Analysis</h4>"
-        f"{format_analysis_results(content)}"
+        f"{content}"
         f"</div>",
         unsafe_allow_html=True
     )
