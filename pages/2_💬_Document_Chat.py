@@ -121,16 +121,6 @@ def handle_user_input(prompt, selected_doc):
                     "role": "assistant",
                     "content": error_message
                 })
-
-def generate_related_questions(prompt, response):
-    """Generate related questions based on the conversation context"""
-    # Add your logic to generate related questions
-    return [
-        "Can you explain this in simpler terms?",
-        "What are the next steps?",
-        "Are there any requirements I should know about?",
-        "Where can I find more information?"
-    ]
-
+                
 if __name__ == "__main__":
     document_chat_page()
