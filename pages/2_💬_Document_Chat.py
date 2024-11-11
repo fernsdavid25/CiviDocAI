@@ -92,7 +92,7 @@ def document_chat_page():
             # Clear chat button
             if len(st.session_state.messages) > 1:
                 if st.button("🗑️ Clear Chat", use_container_width=True):
-                    st.session_state.messages = [st.session_state.messages[0]]
+                    st.session_state.messages = [st.session_state.messages[-1]]
                     st.rerun()
     
     else:
