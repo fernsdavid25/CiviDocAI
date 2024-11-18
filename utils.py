@@ -227,14 +227,14 @@ def process_captured_image(picture):
             analysis = process_image(image)
         
         # Generate filename with timestamp
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"captured_image_{timestamp}"
         
         # Save results
         st.session_state.analyses[filename] = {
             'type': 'image/jpeg',
             'analysis': analysis,
-            'timestamp': datetime.datetime.now()
+            'timestamp': datetime.now()
         }
         
         # Create chat engine
@@ -245,7 +245,7 @@ def process_captured_image(picture):
             filename,
             'Captured Image',
             analysis,
-            datetime.datetime.now()
+            datetime.now()
         )
         
         # Update status to success
