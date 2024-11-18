@@ -155,7 +155,7 @@ def process_uploaded_files(files):
                 st.session_state.analyses[uploaded_file.name] = {
                     'type': uploaded_file.type,
                     'analysis': analysis,
-                    'timestamp': datetime.datetime.now()
+                    'timestamp': datetime.now()
                 }
                 
                 # Create chat engine
@@ -170,7 +170,7 @@ def process_uploaded_files(files):
                 st.session_state.analyses[uploaded_file.name] = {
                     'type': uploaded_file.type,
                     'analysis': analysis,
-                    'timestamp': datetime.datetime.now()
+                    'timestamp': datetime.now()
                 }
                 
                 # Create chat engine
@@ -184,7 +184,7 @@ def process_uploaded_files(files):
                 uploaded_file.name,
                 uploaded_file.type.split('/')[1].upper(),
                 analysis,
-                datetime.datetime.now()
+                datetime.now()
             )
             
         except Exception as e:
